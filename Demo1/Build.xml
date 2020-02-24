@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="clean" basedir=".">
+	<target name="clean">
+	        <delete dir="./staging"/>
+		    <antcall target="MakeJar"/>
+	</target>
+	<target name="Compile">                                                  <!--  target step compile -->
+		<mkdir dir="./staging"/>                                             <!-- Created a directory named Staging -->
+		<javac includeantruntime="false" srcdir="." destdir="./staging" />   <!-- Class file is stored in staging directory -->
+	</target>
+
+	<target name="MakeJar" depends="Compile">                  <!-- MakeJar target gets executed only after compile target is executed -->
+		<mkdir dir="./JarIsHere"/>                             <!-- JarIsHere directory is created -->
+
+		<jar destfile="./JarIsHere/myjar.jar" basedir="staging">     <!-- JAR file is stored in JarIsHere and class file is in Staging directory -->
+			<manifest>
+				<attribute name="Main-Class" value="Demopack.Main"/>   <!-- -->
+			</manifest>
+		</jar>
+		<antcall target="run"/>
+	</target>
+
+	<target name="run" >                                        <!-- Run target is created  -->
+
+		<java jar="./JarIsHere/myjar.jar" fork="true"/>         <!-- Runs JAR file  -->
+	</target>
+
+</project>
